@@ -1,0 +1,61 @@
+travis encrypt -r oskimura/oskimura.github.io.git GH_EMAIL=oskimura
+travis encrypt -r oskimura/oskimura.github.io.git GH_TOKEN=a467371916e87f0e4e4ff0b6720cebb88d3277d8
+
+
+language: haskell
+
+sudo: false
+cache:
+  directories:
+    - $HOME/.stack/
+
+branches:
+  only:
+    - source
+
+env:
+  global:
+    - GH_NAME="335g.travis"
+    - secure: "*******" # token
+    - secure: "*******" # email
+
+before_install:
+  - mkdir -p ~/.local/bin
+  - export PATH=~/.local/bin:$PATH
+  - travis_retry curl -L https://github.com/commercialhaskell/stack/releases/download/v0.1.2.0/stack-0.1.2.0-x86_64-linux.gz | gunzip > ~/.local/bin/stack
+  - chmod a+x ~/.local/bin/stack
+  - export PATH=~/opt/ghc/7.8.4/bin:$PATH
+  - git submodule foreach --recursive 'git checkout master; git ls-files | grep -v README | grep -v CNAME | xargs -r git rm'
+
+addons:
+  apt:
+    sources:
+      - hvr-ghc
+    packages:
+      - ghc-7.8.4
+
+install:
+  - stack setup --no-terminal
+  - stack build --only-snapshot --no-terminal
+
+before_script:
+  - git config --global user.name "$GH_NAME"
+  - git config --global user.email "$GH_EMAIL"
+
+script:
+  - stack build --no-terminal
+  - cd weblog
+  - stack ghc site.hs
+  - ./site build
+
+after_success:
+  - cd _site
+  - export REMOTE=$(git config remote.origin.url | sed 's/.*:\/\///')
+  - git remote add github https://${GH_TOKEN}@${REMOTE}
+  - git add ./*
+  - git status
+  - git commit -m "Built by Travis (build $TRAVIS_BUILD_NUMBER)"
+  - git push --quiet github master:master
+
+notifications:
+  email: false
