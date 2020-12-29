@@ -1,0 +1,2 @@
+User-agent: *
+Sitemap: https://oskimura.github.io/sitemap.xml
