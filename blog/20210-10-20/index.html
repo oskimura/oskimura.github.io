@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+      <!-- Enable responsiveness on mobile devices-->
+      <!-- viewport-fit=cover is to support iPhone X rounded corners and notch in landscape-->
+      <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, viewport-fit=cover">
+
+      <title></title>
+
+      <!-- CSS -->
+      <link rel="stylesheet" href="https://oskimura.github.io/print.css" media="print">
+      <link rel="stylesheet" href="https://oskimura.github.io/poole.css">
+      <link rel="stylesheet" href="https://oskimura.github.io/hyde.css">
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+
+      
+
+      
+      
+    </head>
+
+    <body class=" ">
+        
+            <div class="sidebar">
+                <div class="container sidebar-sticky">
+                    <div class="sidebar-about">
+                        
+                            <a href="https:&#x2F;&#x2F;oskimura.github.io"><h1></h1></a>
+                            
+                        
+                    </div>
+
+                    <ul class="sidebar-nav">
+                        
+                        
+                        
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div class="content container">
+            
+<h1 class="title">
+  プログラミング言語Go前編
+</h1>
+<p class="subtitle"><strong>2021-10-20</strong></p>
+<p><h1 id="puroguraminguyan-yu-gowodu-ndemita">プログラミング言語Goを読んでみた。</h1>
+<p>プログラミング言語GoとはGo言語の作者カーニハン氏による、Go言語解説の書籍です。</p>
+<p>Go言語はまえがきにある通り21世紀のCと言われるだけあり、かなり保守的な文法を持つ言語です。</p>
+<h1 id="mu-ci">目次</h1>
+<ul>
+<li>チュートリアル</li>
+<li>プログラム構造</li>
+<li>基本データ構造</li>
+<li>コンポジット型</li>
+<li>関数</li>
+<li>メソッド</li>
+<li>インターフェース</li>
+<li>ゴルーチンとチャンネル</li>
+<li>共有された変数による並行性</li>
+<li>パッケージとGoツール</li>
+<li>リフレクション</li>
+<li>低レベルプログラミング</li>
+</ul>
+<h1 id="tiyutoriaru">チュートリアル</h1>
+<p>Go言語の紹介です。標準ライブラリで画像がつくれるのは少し驚きました。</p>
+<h1 id="puroguramugou-zao">プログラム構造</h1>
+<p>基本的な文法の紹介です。変数名の規則や宣言及び代入、型やスコープについて書いてあります。
+##名前
+命名規則はCと基本的には変わらない感じです。</p>
+<h2 id="xuan-yan">宣言</h2>
+<p>宣言は型を変数名の後に書く形式のようです。</p>
+<h2 id="bian-shu">変数</h2>
+<p>また <code>new</code>によりメモリの動的確保ができるようです。
+変数のアドレスを取得するポインタもあるようです。</p>
+<h2 id="xing-xuan-yan">型宣言</h2>
+<p><code>type</code>により型名の別名を宣言できます。</p>
+<h2 id="patukezitohuairu">パッケージとファイル</h2>
+<p>名前空間、パッケージ、ファイルの説明へと続きます。</p>
+<h2 id="sukopu">スコープ</h2>
+<p>スコープに関してはレキシカルスコープのようです。</p>
+<h1 id="ji-ben-detagou-zao">基本データ構造</h1>
+<p>Goの型は４つに分類され、基本型、合成型、参照型インターフェイス型の４つがあります。</p>
+<p>合成型は、配列、構造体があります。
+参照型はポインタ、スライス、マップ、関数、チャンネル型があります。
+関数やチャンネルも参照型にまとめられていたの意外でした。</p>
+<p>整数には<code>int8</code> <code>int16</code> <code>int32</code>  <code>int64</code>、 <code>uint8</code> <code>uint16</code> <code>uint32</code> <code>uint64</code>がありそれぞれ8〜64ビットの符号付き、符号なしです。
+またrune型という32bit整数の型もあるようです。</p>
+<p>不動少数点にはfloat32とfloat64の二種類があるようです。
+不動少数点関連の定義は<code>math</code>パッケージにあります。
+驚くべき事にGoには複素数型があります。</p>
+<p>素晴らしいことにGoの文字列はUnicodeを前提している。
+GoにおいてUnicodeのテキスト文字列をコードポイントをルーンという概念の列と定義されています。
+次のようなコードは</p>
+<pre><code>for i, r := range &quot;Hello, 世界&quot; {
+    fmt.Printf(&quot;%d\t%q\t%d\n&quot;, i, r, r)  
+}
+</code></pre>
+<p>以下のように、コードポイントが考慮されて出力されます。</p>
+<pre><code>0	&#x27;H&#x27;	72
+1	&#x27;e&#x27;	101
+2	&#x27;l&#x27;	108
+3	&#x27;l&#x27;	108
+4	&#x27;o&#x27;	111
+5	&#x27;,&#x27;	44
+6	&#x27; &#x27;	32
+7	&#x27;世&#x27;	19990
+10	&#x27;界&#x27;	30028
+</code></pre>
+<h1 id="konpozitutoxing">コンポジット型</h1>
+<p>コンポジット型には配列、スライス、マップ、構造体の４種類があります。
+配列と構造体はどちらも固定サイズですが、マップとスライスは動的なデータ構造だそうです。
+スライスは配列の参照を持っているそうです。
+マップはいわゆる連想配列です。
+構造体には空構造体という空の構造体を定義できるようです。</p>
+<h1 id="guan-shu">関数</h1>
+<p>Goにおいて関数はファーストクラスです。またタプルを使うことによって多値を返す事ができます。
+またGoには例外はないのでエラー伝播などでエラー処理をするようです。
+また、Goには無名関数やクロージャーもあるので多少はSchemeと同じテクニックが使えそうです。</p>
+</p>
+
+        </div>
+
+    </body>
+
+</html>
