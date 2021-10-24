@@ -1,6 +1,6 @@
-+++ 
-title="New Year" 
-date=2020-01-01 
++++
+title="NewYear"
+date=2021-01-01
 +++
 
 2021の元旦です。
